@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cari Kartu Ujian</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fcefee, #e0f7fa); 
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 20px 20px;
+      background-color: #fff;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: #ff69b4;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+    .container {
+      max-width: 90%;
+      margin: 20px auto;
+      padding: 15px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 1rem;
+      border: 2px solid #ffe0ec;
+      border-radius: 8px;
+      outline: none;
+      transition: border 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #ff69b4;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: white;
+      background-color: #ff69b4;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+
+    .card {
+      background-color: #fff0f6;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      border-left: 5px solid #ff69b4;
+    }
+
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+      color: #d81b60;
+    }
+
+    .card p {
+      margin: 4px 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .print-btn {
+      display: block;
+      margin: 12px auto 0;
+      background-color: #4caf50;
+      border: none;
+      color: white;
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .print-btn:hover {
+      background-color: #43a047;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      color: #aaa;
+      font-size: 0.8rem;
+    }
+
+    /* Responsive tweak */
+    @media (min-width: 600px) {
+      .container {
+        max-width: 600px;
+        padding: 20px;
+      }
+      .card h2 {
+        font-size: 1.2rem;
+      }
+      .card p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Portal Cari Kartu Ujian</h1>
+    <p>Masukkan nama atau nomor ujian untuk menemukan kartu ujianmu.</p>
+  </header>
+
+  <div class="container">
+    <input type="text" id="searchInput" placeholder="Cari nama atau nomor ujian..." />
+    <button onclick="searchData()">🔍 Cari</button>
+    <div id="result"></div>
+  </div>
+
+  <footer>
+    &copy; 2025 Sekolah Hebat. Dibuat dengan ❤ oleh Tim IT.
+  </footer>
+
+  <script>
+    const students = [
+      {"no_ujian": "3258", "nama": "Acintya Permata Jannah", "kelas": "IV C", "password": "3258"},
+      {"no_ujian": "3259", "nama": "Aisyah Nur Maulida", "kelas": "IV C", "password": "3259"},
+      {"no_ujian": "3260", "nama": "Aisyah Nur Puteri Sholna", "kelas": "IV C", "password": "3260"},
+      {"no_ujian": "3261", "nama": "Alexandra Gabrielle Coloay", "kelas": "IV C", "password": "3261"},
+      {"no_ujian": "9999", "nama": "Alvin Rahmadani", "kelas": "IV C", "password": "9999"},
+      {"no_ujian": "3262", "nama": "Arka Naufal Aprilio Arifin", "kelas": "IV C", "password": "3262"},
+      {"no_ujian": "3263", "nama": "Athalla Sabiq El Fathin Saili", "kelas": "IV C", "password": "3263"},
+      {"no_ujian": "3301", "nama": "Christian Endrew Rawung", "kelas": "IV C", "password": "3301"},
+      {"no_ujian": "3264", "nama": "Euodia Munster", "kelas": "IV C", "password": "3264"},
+      {"no_ujian": "3265", "nama": "Farrel Rizky Raditya", "kelas": "IV C", "password": "3265"},
+      {"no_ujian": "3267", "nama": "Flora Angelica Ramona Indahyani", "kelas": "IV C", "password": "3267"},
+      {"no_ujian": "3268", "nama": "Gabriel Sinaga", "kelas": "IV C", "password": "3268"},
+      {"no_ujian": "3269", "nama": "Gracia Geraldina Putri", "kelas": "IV C", "password": "3269"},
+      {"no_ujian": "3270", "nama": "Ibnu Reynand Al'fatih Pratama", "kelas": "IV C", "password": "3270"},
+      {"no_ujian": "3271", "nama": "Jhordan Evan San Putra Wijaya", "kelas": "IV C", "password": "3271"},
+      {"no_ujian": "3272", "nama": "Jovita Abigail Mumu", "kelas": "IV C", "password": "3272"},
+      {"no_ujian": "3273", "nama": "Khafidzh Numan Rifai Siregar", "kelas": "IV C", "password": "3273"},
+      {"no_ujian": "3274", "nama": "Langit Senja Putra", "kelas": "IV C", "password": "3274"},
+      {"no_ujian": "3275", "nama": "Meyzoya Alsafira", "kelas": "IV C", "password": "3275"},
+      {"no_ujian": "3276", "nama": "Muhammad Dimas Anugrah", "kelas": "IV C", "password": "3276"},
+      {"no_ujian": "3277", "nama": "Muhammad Nahiz Gusman", "kelas": "IV C", "password": "3277"},
+      {"no_ujian": "3279", "nama": "Muhammad Souqy Al Farouq Abiputra", "kelas": "IV C", "password": "3279"},
+      {"no_ujian": "3280", "nama": "Mustafa Putra Radil", "kelas": "IV C", "password": "3280"},
+      {"no_ujian": "3415", "nama": "Mustafiid Daffa Bayhaqiy", "kelas": "IV C", "password": "3415"},
+      {"no_ujian": "3281", "nama": "Novia Asami Sianturi", "kelas": "IV C", "password": "3281"},
+      {"no_ujian": "3283", "nama": "Qonitah Zalfa", "kelas": "IV C", "password": "3283"},
+      {"no_ujian": "3284", "nama": "Quinn Michaela Raisa Lestari", "kelas": "IV C", "password": "3284"},
+      {"no_ujian": "3286", "nama": "Risfin Andaris Batara", "kelas": "IV C", "password": "3286"},
+      {"no_ujian": "3287", "nama": "Shawqi Giras Ravisqi", "kelas": "IV C", "password": "3287"},
+      {"no_ujian": "3288", "nama": "Zulham Dhafiz Alfatir", "kelas": "IV C", "password": "3288"}
+    ];
+
+    function searchData() {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = "";
+
+      if (!query) {
+        resultDiv.innerHTML = "<p style='text-align:center; color:#999;'>Silakan masukkan nama atau nomor ujian.</p>";
+        return;
+      }
+
+      const results = students.filter(student => 
+        student.nama.toLowerCase().includes(query) || student.no_ujian.includes(query)
+      );
+
+      if (results.length === 0) {
+        resultDiv.innerHTML = "<p style='text-align:center; color:#e53935;'>Data tidak ditemukan.</p>";
+        return;
+      }
+
+      results.forEach(student => {
+        resultDiv.innerHTML += `
+          <div class="card">
+            <h2>${student.nama}</h2>
+            <p><strong>Nomor Ujian:</strong> ${student.no_ujian}</p>
+            <p><strong>Kelas:</strong> ${student.kelas}</p>
+            <p><strong>Password:</strong> ${student.password}</p>
+            <button class="print-btn" onclick="window.print()">🖨️ Cetak</button>
+          </div>
+        `;
+      });
+    }
+  </script>
+</body>
+</html>
